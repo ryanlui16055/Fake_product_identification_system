@@ -44,8 +44,10 @@ def rotate_img(img_path):
 # txt is qr code content, string type and it will save as image, feel free to change name in img.save("")
 def generate_QRcode(txt):
     img = qrcode.make(txt)
-    img.save("test.png")
-    cv2.imshow("Image", r".\test.png")
+    img.save(r"blockchain_project\blockchain_project\images\test.jpg")
+    image = cv2.imread(r"blockchain_project\blockchain_project\images\test.jpg")
+    cv2.imshow("Image", image)
+    cv2.waitKey(0)
 
 
 def identify_hash(provided_chain, chain_in_product):
@@ -57,7 +59,7 @@ def identify_hash(provided_chain, chain_in_product):
     return True
 
 
-print(qr_code_decoder(r".\test.png"))
+# print(qr_code_decoder(r".\test.png"))
 # rotate_img(r".\abc.png")
 # cv2.imshow("QR", generate_QRcode("this is me"))
 # generate_QRcode("this is me")
