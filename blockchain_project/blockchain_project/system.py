@@ -6,6 +6,7 @@ from tkinter.filedialog import askopenfile
 from PIL import Image, ImageTk
 import qr_code as qrCode
 
+# import blockchain as blk_chain
 
 window = Tk()
 window.title("Blockchain")
