@@ -1,7 +1,8 @@
 import hashlib
 from time import time
 import json
-from numpy import block
+from numpy import block, empty
+import json
 
 
 class blockchain(object):
@@ -9,7 +10,7 @@ class blockchain(object):
         self.chain = []
         self.pendingTransactions = []
         self.CreateBlock(
-            previous_hash="",
+            previous_hash="NAN",
             proof=100,
         )
 
@@ -43,7 +44,7 @@ class blockchain(object):
 
     def hash(self, block):
         string_object = json.dumps(block, sort_keys=True)
-        # encode obj to binary form
+
         block_string = string_object.encode()
 
         raw_hash = hashlib.sha256(block_string)
@@ -52,25 +53,76 @@ class blockchain(object):
         return hex_hash
 
 
+# ---------------------------------------------------------------------------------
 blockchain_Apple = blockchain()
-t1 = blockchain_Apple.new_transaction("Satoshi", "Mike", "Apple")
-# blockchain_Apple.CreateBlock(12345)
-t2 = blockchain_Apple.new_transaction("Mike", "Satoshi", "Apple")
-# blockchain_Apple.CreateBlock(5,)
-t3 = blockchain_Apple.new_transaction("Satoshi", "Hal Finney", "Apple")
-blockchain_Apple.CreateBlock(6)
-print(t1)
-
 blockchain_Melon = blockchain()
-t4 = blockchain_Melon.new_transaction("Mike", "Alice", "Melon")
-t5 = blockchain_Melon.new_transaction("Alice", "Bob", "Melon")
-t6 = blockchain_Melon.new_transaction("Bob", "Mike", "Melon")
-blockchain_Melon.CreateBlock(6789)
-print(t4)
 blockchain_Stawberry = blockchain()
-t7 = blockchain_Stawberry.new_transaction("Mike", "Alice", "Stawberry")
-t8 = blockchain_Stawberry.new_transaction("Alice", "Bob", "Stawberry")
-t9 = blockchain_Stawberry.new_transaction("Bob", "Mike", "Stawberry")
-blockchain_Stawberry.CreateBlock(6789)
 
-print("Genesis block: ", blockchain_Apple.chain)
+
+with open(
+    r".\blockchain_project\blockchain_project\Chain_data\Apple.json", "r"
+) as apple_chain:
+
+    apple = json.loads(apple_chain.read())
+
+    if apple != "":
+        blockchain_Apple.chain = apple
+
+    t1 = blockchain_Apple.new_transaction("Satoshi", "Mike", "Apple")
+    blockchain_Apple.CreateBlock(12345)
+
+    t2 = blockchain_Apple.new_transaction("Mike", "Satoshi", "Apple")
+    blockchain_Apple.CreateBlock(56867)
+
+    t3 = blockchain_Apple.new_transaction("Satoshi", "Hal Finney", "Apple")
+    blockchain_Apple.CreateBlock(54245)
+
+with open(
+    r".\blockchain_project\blockchain_project\Chain_data\Apple.json", "w"
+) as apple_chain:
+    apple_chain.write(json.dumps(blockchain_Apple.chain))
+
+# ---------------------------------------------------------------------------------
+
+with open(
+    r".\blockchain_project\blockchain_project\Chain_data\Melon.json", "r"
+) as Melon_chain:
+
+    Melon = json.loads(Melon_chain.read())
+
+    if Melon != "":
+        blockchain_Melon.chain = Melon
+
+    t4 = blockchain_Melon.new_transaction("Mike", "Alice", "Melon")
+    blockchain_Melon.CreateBlock(53463463)
+    t5 = blockchain_Melon.new_transaction("Satoshi", "Mike", "Melon")
+    blockchain_Melon.CreateBlock(6763463489)
+    t6 = blockchain_Melon.new_transaction("Satoshi", "Alice", "Melon")
+    blockchain_Melon.CreateBlock(6764363489)
+
+with open(
+    r".\blockchain_project\blockchain_project\Chain_data\Melon.json", "w"
+) as Melon_chain:
+    Melon_chain.write(json.dumps(blockchain_Melon.chain))
+
+# ---------------------------------------------------------------------------------
+with open(
+    r".\blockchain_project\blockchain_project\Chain_data\Stawberry.json", "r"
+) as Stawberry_chain:
+
+    Stawberry = json.loads(Stawberry_chain.read())
+
+    if Stawberry != "":
+        blockchain_Stawberry.chain = Stawberry
+
+    t7 = blockchain_Stawberry.new_transaction("Mike", "Bob", "Stawberry")
+    blockchain_Stawberry.CreateBlock(6789)
+    t8 = blockchain_Stawberry.new_transaction("Alice", "Bob", "Stawberry")
+    blockchain_Stawberry.CreateBlock(6789)
+    t9 = blockchain_Stawberry.new_transaction("Alice", "Mike", "Stawberry")
+    blockchain_Stawberry.CreateBlock(6789)
+
+with open(
+    r".\blockchain_project\blockchain_project\Chain_data\Stawberry.json", "w"
+) as Stawberry_chain:
+    Stawberry_chain.write(json.dumps(blockchain_Stawberry.chain))
