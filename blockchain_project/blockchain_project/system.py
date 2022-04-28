@@ -4,8 +4,10 @@ from tkinter import messagebox
 from tkinter import filedialog
 from tkinter.filedialog import askopenfile
 from PIL import Image, ImageTk
-#import qr_code as qrCode
-# import blockchain as blk_chain
+import qr_code as qrCode
+import blockchain as bChain
+import os
+
 
 window = Tk()
 window.title("Blockchain")
@@ -15,7 +17,7 @@ pad = 5
 
 div_size = 200
 
-window.eval('tk::PlaceWindow . center')
+window.eval("tk::PlaceWindow . center")
 
 
 def define_layout(obj, cols=1, rows=1):
@@ -32,11 +34,12 @@ def define_layout(obj, cols=1, rows=1):
         trg = obj
         method(trg, cols, rows)
 
+
 def scan():
     window = Tk()
     window.geometry("500x200")  # Size of the window
     window.title("Scaning")
-    window.eval('tk::PlaceWindow . center')
+    window.eval("tk::PlaceWindow . center")
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
     div2 = Frame(window, width=div_size, height=div_size, bg="white")
 
@@ -46,12 +49,18 @@ def scan():
     div1.grid(row=0, padx=pad, pady=pad, sticky=align_mode)
     div2.grid(row=1, padx=pad, pady=pad, sticky=align_mode)
     define_layout(window, cols=1, rows=2)
-    define_layout([div1,div2])
+    define_layout([div1, div2])
     l1 = Label(div1, text="Scan QR code", bg="orange", fg="white")
 
-    b1 = Button(div2, text="Choose file", bg="green", fg="white",command=lambda: upload_file())
-    b2 = Button(div2, text="Return",bg="green", fg="white",command=lambda: window.withdraw())
-    l4 = Label(div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e")
+    b1 = Button(
+        div2, text="Choose file", bg="green", fg="white", command=lambda: upload_file()
+    )
+    b2 = Button(
+        div2, text="Return", bg="green", fg="white", command=lambda: window.withdraw()
+    )
+    l4 = Label(
+        div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e"
+    )
     l1.grid(row=0, sticky=align_mode)
     b1.grid(row=0, sticky=align_mode)
     b2.grid(row=1, sticky=align_mode)
@@ -62,18 +71,25 @@ def scan():
         f_types = [("Jpg Files", "*.jpg")]
         filename = filedialog.askopenfilename(filetypes=f_types)
         img = ImageTk.PhotoImage(file=filename)
-        messagebox.showinfo(title="Scan QR code", message= "File upload successful" + "\nFile path:" + filename + "\nThe product is " )
-    
+        messagebox.showinfo(
+            title="Scan QR code",
+            message="File upload successful"
+            + "\nFile path:"
+            + filename
+            + "\nThe product is ",
+        )
+
     define_layout(window, cols=1, rows=2)
     define_layout(div1, rows=1)
     define_layout(div2, rows=3)
     window.mainloop()
 
+
 def option():
     window = Tk()
     window.title("Generate QR code")
     window.geometry("500x200")
-    window.eval('tk::PlaceWindow . center')
+    window.eval("tk::PlaceWindow . center")
 
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
     div2 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -96,21 +112,21 @@ def option():
         text="Apple",
         bg="green",
         fg="white",
-        command=lambda: qrCode.generate_QRcode("abc"),
+        command=lambda: qrCode.generate_QRcode(bChain.blockchain_Apple.chain),
     )
     bt2 = Button(
         div2,
         text="Melon",
         bg="green",
         fg="white",
-        command=lambda: qrCode.generate_QRcode("abc"),
+        command=lambda: qrCode.generate_QRcode(bChain.blockchain_Melon.chain),
     )
     bt3 = Button(
         div2,
         text="Stawberry",
         bg="green",
         fg="white",
-        command=lambda: qrCode.generate_QRcode("abc"),
+        command=lambda: qrCode.generate_QRcode(bChain.blockchain_Stawberry.chain),
     )
     bt4 = Button(div2, text="Return", bg="green", fg="white", command=window.destroy)
     l4 = Label(
@@ -132,17 +148,18 @@ def option():
 
 
 def find_file_path():
-    return 
+    return
 
-def addrecord(sender,reciever,number,code):
-    messagebox.showwarning("System", "File download" + "\nFile path:"  + find_file_path )
+
+def addrecord(sender, reciever, number, code):
+    return
 
 
 def add():
     window = Tk()
     window.title("Add transaction record")
     window.geometry("500x200")
-    window.eval('tk::PlaceWindow . center')
+    window.eval("tk::PlaceWindow . center")
 
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
     div2 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -170,33 +187,33 @@ def add():
         text="Apple",
         bg="green",
         fg="white",
-        command=lambda: addrecord(e21.get(),e22.get(),e23.get(),1),
+        command=lambda: addrecord(e21.get(), e22.get(), e23.get(), 1),
     )
     bt2 = Button(
         div2,
         text="Melon",
         bg="green",
         fg="white",
-        command=lambda: addrecord(e21.get(),e22.get(),e23.get(),2),
+        command=lambda: addrecord(e21.get(), e22.get(), e23.get(), 2),
     )
     bt3 = Button(
         div2,
         text="Stawberry",
         bg="green",
         fg="white",
-        command=lambda: addrecord(e21.get(),e22.get(),e23.get(),3),
+        command=lambda: addrecord(e21.get(), e22.get(), e23.get(), 3),
     )
     bt4 = Button(div2, text="Return", bg="green", fg="white", command=window.destroy)
     l4 = Label(
         div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e"
     )
 
-    l21.grid(column=0, row=0,sticky=align_mode)
-    e21.grid(column=0, row=1,sticky=align_mode)
-    l22.grid(column=1, row=0,sticky=align_mode)
+    l21.grid(column=0, row=0, sticky=align_mode)
+    e21.grid(column=0, row=1)
+    l22.grid(column=1, row=0, sticky=align_mode)
     e22.grid(column=1, row=1)
-    l23.grid(column=2,row=0,sticky=align_mode)
-    e23.grid(column=2,row=1)
+    l23.grid(column=2, row=0, sticky=align_mode)
+    e23.grid(column=2, row=1)
     l24.grid(columnspan=1, sticky=align_mode)
     bt1.grid(column=0, row=2, sticky=align_mode)
     bt2.grid(column=1, row=2, sticky=align_mode)
@@ -216,7 +233,7 @@ def usermanu(username):
     manu = Tk()
     manu.title("Blockchain")
     manu.geometry("500x200")
-    manu.eval('tk::PlaceWindow . center')
+    manu.eval("tk::PlaceWindow . center")
 
     div1 = Frame(manu, width=div_size, height=div_size, bg="white")
     div2 = Frame(manu, width=div_size, height=div_size, bg="white")
@@ -267,7 +284,7 @@ def adminmanu(username):
     manu = Tk()
     manu.title("Blockchain")
     manu.geometry("500x200")
-    manu.eval('tk::PlaceWindow . center')
+    manu.eval("tk::PlaceWindow . center")
 
     div1 = Frame(manu, width=div_size, height=div_size, bg="white")
     div2 = Frame(manu, width=div_size, height=div_size, bg="white")
@@ -406,9 +423,9 @@ bt2 = Button(
 bt3 = Button(div2, text="Quit", bg="green", fg="white", command=window.destroy)
 l4 = Label(div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e")
 
-l21.grid(column=0, row=0,padx=20,ipadx=20,sticky=W)
+l21.grid(column=0, row=0, padx=20, ipadx=20, sticky=W)
 e21.grid(column=0, row=0)
-l22.grid(column=0, row=1,padx=20,ipadx=20,sticky=W)
+l22.grid(column=0, row=1, padx=20, ipadx=20, sticky=W)
 e22.grid(column=0, row=1)
 bt1.grid(columnspan=2, sticky=align_mode)
 bt2.grid(columnspan=3, sticky=align_mode)
