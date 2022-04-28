@@ -10,7 +10,7 @@ import qr_code as qrCode
 
 window = Tk()
 window.title("Blockchain")
-window.geometry("300x200")
+window.geometry("450x350")
 align_mode = "nswe"
 pad = 5
 
@@ -34,29 +34,44 @@ def define_layout(obj, cols=1, rows=1):
 
 def scan():
     window = Tk()
-    window.geometry("400x300")  # Size of the window
+    window.geometry("500x200")  # Size of the window
     window.title("Scaning")
-    l1 = Label(window, text="Select QR code", width=30, font="consolas")
+    div1 = Frame(window, width=div_size, height=div_size, bg="white")
+    div2 = Frame(window, width=div_size, height=div_size, bg="white")
 
-    b1 = Button(window, text="Upload QR code", width=20, command=lambda: upload_file())
-    b2 = Button(window, text="Return", width=20, command=lambda: window.withdraw())
-    l1.grid(columnspan=1)
-    b1.grid(columnspan=2)
-    b2.grid(columnspan=3)
+    window.update()
+    win_size = min(window.winfo_width(), window.winfo_height())
+
+    div1.grid(row=0, padx=pad, pady=pad, sticky=align_mode)
+    div2.grid(row=1, padx=pad, pady=pad, sticky=align_mode)
+    define_layout(window, cols=1, rows=2)
+    define_layout([div1,div2])
+    l1 = Label(div1, text="Scan QR code", bg="orange", fg="white")
+
+    b1 = Button(div2, text="Choose file", bg="green", fg="white",command=lambda: upload_file())
+    b2 = Button(div2, text="Return",bg="green", fg="white",command=lambda: window.withdraw())
+    l4 = Label(div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e")
+    l1.grid(row=0, sticky=align_mode)
+    b1.grid(row=0, sticky=align_mode)
+    b2.grid(row=1, sticky=align_mode)
+    l4.grid(row=2, sticky=align_mode)
 
     def upload_file():
         global img
         f_types = [("Jpg Files", "*.jpg")]
         filename = filedialog.askopenfilename(filetypes=f_types)
         img = ImageTk.PhotoImage(file=filename)
-
+        messagebox.showinfo(title="Scan QR code", message= "File upload successful" + "\nFile path:" + filename + "\nThe product is " )
+    
+    define_layout(window, cols=1, rows=2)
+    define_layout(div1, rows=1)
+    define_layout(div2, rows=3)
     window.mainloop()
-
 
 def option():
     window = Tk()
-    window.title("Blockchain")
-    window.geometry("300x200")
+    window.title("Generate QR code")
+    window.geometry("500x200")
 
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
     div2 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -95,7 +110,7 @@ def option():
         fg="white",
         command=lambda: qrCode.generate_QRcode("abc"),
     )
-    bt4 = Button(div2, text="Quit", bg="green", fg="white", command=window.destroy)
+    bt4 = Button(div2, text="Return", bg="green", fg="white", command=window.destroy)
     l4 = Label(
         div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e"
     )
@@ -113,10 +128,75 @@ def option():
 
     window.mainloop()
 
+def addrecord(code):
+    return
 
 def add():
+    window = Tk()
+    window.title("Add transaction record")
+    window.geometry("500x200")
 
-    return
+    div1 = Frame(window, width=div_size, height=div_size, bg="white")
+    div2 = Frame(window, width=div_size, height=div_size, bg="white")
+
+    window.update()
+    win_size = min(window.winfo_width(), window.winfo_height())
+
+    div1.grid(row=0, padx=pad, pady=pad, sticky=align_mode)
+    div2.grid(row=1, padx=pad, pady=pad, sticky=align_mode)
+
+    define_layout(window, cols=1, rows=2)
+    define_layout([div1, div2])
+
+    l11 = Label(div1, text="Add transaction record", bg="orange", fg="white")
+    l11.grid(row=0, sticky=align_mode)
+    l21 = Label(div2, text="Username: ", bg="white", fg="black")
+    e21 = Entry(div2, bg="white", fg="black")
+    l22 = Label(div2, text="Password: ", bg="white", fg="black")
+    e22 = Entry(div2, bg="white", fg="black")
+    l23 = Label(div2, text="Please choose a product: ", bg="white", fg="black")
+    bt1 = Button(
+        div2,
+        text="Apple",
+        bg="green",
+        fg="white",
+        command=lambda: addrecord("abc"),
+    )
+    bt2 = Button(
+        div2,
+        text="Melon",
+        bg="green",
+        fg="white",
+        command=lambda: addrecord("abc"),
+    )
+    bt3 = Button(
+        div2,
+        text="Stawberry",
+        bg="green",
+        fg="white",
+        command=lambda: addrecord("abc"),
+    )
+    bt4 = Button(div2, text="Return", bg="green", fg="white", command=window.destroy)
+    l4 = Label(
+        div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e"
+    )
+
+    l21.grid(column=0, row=0,padx=20,ipadx=20,sticky=W)
+    e21.grid(column=0, row=0)
+    l22.grid(column=0, row=1,padx=20,ipadx=20,sticky=W)
+    e22.grid(column=0, row=1)
+    l23.grid(columnspan=1, sticky=align_mode)
+    bt1.grid(column=0, row=2, sticky=align_mode)
+    bt2.grid(column=1, row=2, sticky=align_mode)
+    bt3.grid(column=2, row=2, sticky=align_mode)
+    bt4.grid(columnspan=3, sticky=align_mode)
+    l4.grid(columnspan=4, sticky=E)
+
+    define_layout(window, cols=1, rows=2)
+    define_layout(div1, rows=1)
+    define_layout(div2, rows=4)
+
+    window.mainloop()
 
 
 def usermanu(username):
@@ -157,8 +237,8 @@ def usermanu(username):
     )
 
     l21.grid(column=0, row=0, sticky=W)
-    bt1.grid(column=0, row=1, sticky=align_mode)
-    bt2.grid(column=1, row=1, sticky=align_mode)
+    bt1.grid(columnspan=1, sticky=align_mode)
+    bt2.grid(columnspan=2, sticky=align_mode)
     bt3.grid(columnspan=3, sticky=align_mode)
     l4.grid(columnspan=4, sticky=E)
 
@@ -235,7 +315,7 @@ def validate(username, password):
                 if (password in line2) & (i == cnt):
                     fname.close()
                     fword.close()
-                    if username == "Clarus" or username == "Ryan":
+                    if username == "clarus" or username == "ryan":
                         adminmanu(username)
                     else:
                         usermanu(username)
@@ -312,16 +392,16 @@ bt2 = Button(
 bt3 = Button(div2, text="Quit", bg="green", fg="white", command=window.destroy)
 l4 = Label(div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e")
 
-l21.grid(column=0, row=0, sticky=E)
-e21.grid(column=1, row=0, sticky=W)
-l22.grid(column=0, row=1, sticky=E)
-e22.grid(column=1, row=1, sticky=W)
-bt1.grid(column=0, row=2, sticky=align_mode)
-bt2.grid(column=1, row=2, sticky=align_mode)
-bt3.grid(columnspan=3, sticky=align_mode)
-l4.grid(columnspan=4, sticky=E)
+l21.grid(column=0, row=0,padx=20,ipadx=20,sticky=W)
+e21.grid(column=0, row=0)
+l22.grid(column=0, row=1,padx=20,ipadx=20,sticky=W)
+e22.grid(column=0, row=1)
+bt1.grid(columnspan=2, sticky=align_mode)
+bt2.grid(columnspan=3, sticky=align_mode)
+bt3.grid(columnspan=4, sticky=align_mode)
+l4.grid(columnspan=5, sticky=E)
 
 define_layout(window, cols=1, rows=2)
 define_layout(div1, rows=1)
-define_layout(div2, rows=4)
+define_layout(div2, rows=5)
 window.mainloop()
