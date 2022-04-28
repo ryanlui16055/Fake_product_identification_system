@@ -37,7 +37,7 @@ def define_layout(obj, cols=1, rows=1):
 
 def scan():
     window = Tk()
-    window.geometry("500x200")  # Size of the window
+    window.geometry("500x200") 
     window.title("Scaning")
     window.eval("tk::PlaceWindow . center")
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -81,7 +81,7 @@ def scan():
 
     define_layout(window, cols=1, rows=2)
     define_layout(div1, rows=1)
-    define_layout(div2, rows=3)
+    define_layout(div2, rows=2)
     window.mainloop()
 
 
@@ -140,9 +140,7 @@ def option():
     bt4.grid(columnspan=3, sticky=align_mode)
     l4.grid(columnspan=4, sticky=E)
 
-    define_layout(window, cols=1, rows=2)
-    define_layout(div1, rows=1)
-    define_layout(div2, rows=4)
+    define_layout(div2, cols=3,rows=4)
 
     window.mainloop()
 
@@ -221,9 +219,7 @@ def add():
     bt4.grid(columnspan=3, sticky=align_mode)
     l4.grid(columnspan=4, sticky=E)
 
-    define_layout(window, cols=1, rows=2)
-    define_layout(div1, rows=1)
-    define_layout(div2, rows=4)
+    define_layout(div2,cols=3, rows=4)
 
     window.mainloop()
 
@@ -254,27 +250,18 @@ def usermanu(username):
     bt1 = Button(
         div2, text="Scan QR code", bg="green", fg="white", command=lambda: scan()
     )
-    bt2 = Button(
-        div2,
-        text="Generate QR code",
-        bg="green",
-        fg="white",
-        command=lambda: option(username),
-    )
+   
     bt3 = Button(div2, text="Quit", bg="green", fg="white", command=manu.destroy)
     l4 = Label(
         div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e"
     )
 
     l21.grid(column=0, row=0, sticky=W)
-    bt1.grid(columnspan=1, sticky=align_mode)
-    bt2.grid(columnspan=2, sticky=align_mode)
-    bt3.grid(columnspan=3, sticky=align_mode)
-    l4.grid(columnspan=4, sticky=E)
+    bt1.grid(columnspan=1, sticky=align_mode)  
+    bt3.grid(columnspan=2, sticky=align_mode)
+    l4.grid(columnspan=3, sticky=E)
 
-    define_layout(manu, cols=1, rows=2)
-    define_layout(div1, rows=1)
-    define_layout(div2, rows=4)
+    define_layout(div2, rows=3)
 
     manu.mainloop()
 
@@ -327,9 +314,7 @@ def adminmanu(username):
     bt4.grid(columnspan=3, sticky=align_mode)
     l4.grid(columnspan=4, sticky=E)
 
-    define_layout(manu, cols=1, rows=2)
-    define_layout(div1, rows=1)
-    define_layout(div2, rows=4)
+    define_layout(div2,cols=3 ,rows=4)
 
     manu.mainloop()
 
@@ -381,7 +366,7 @@ def register(username, password):
     usermanu(username)
     return
 
-
+adminmanu("clarus")
 # root
 div1 = Frame(window, width=div_size, height=div_size, bg="white")
 div2 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -423,16 +408,14 @@ bt2 = Button(
 bt3 = Button(div2, text="Quit", bg="green", fg="white", command=window.destroy)
 l4 = Label(div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e")
 
-l21.grid(column=0, row=0, padx=20, ipadx=20, sticky=W)
-e21.grid(column=0, row=0)
-l22.grid(column=0, row=1, padx=20, ipadx=20, sticky=W)
-e22.grid(column=0, row=1)
-bt1.grid(columnspan=2, sticky=align_mode)
-bt2.grid(columnspan=3, sticky=align_mode)
-bt3.grid(columnspan=4, sticky=align_mode)
-l4.grid(columnspan=5, sticky=E)
+l21.grid(column=0, row=0, sticky=align_mode)
+e21.grid(column=1, row=0,sticky=W)
+l22.grid(column=0, row=1, sticky=align_mode)
+e22.grid(column=1, row=1,sticky=W)
+bt1.grid(column=0,row=2, sticky=align_mode)
+bt2.grid(column=1,row=2, sticky=align_mode)
+bt3.grid(columnspan=3, sticky=align_mode)
+l4.grid(columnspan=4, sticky=E)
 
-define_layout(window, cols=1, rows=2)
-define_layout(div1, rows=1)
-define_layout(div2, rows=5)
+define_layout(div2, cols=2,rows=4)
 window.mainloop()
