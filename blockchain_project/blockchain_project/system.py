@@ -4,8 +4,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 from tkinter.filedialog import askopenfile
 from PIL import Image, ImageTk
-import qr_code as qrCode
-
+#import qr_code as qrCode
 # import blockchain as blk_chain
 
 window = Tk()
@@ -15,6 +14,8 @@ align_mode = "nswe"
 pad = 5
 
 div_size = 200
+
+window.eval('tk::PlaceWindow . center')
 
 
 def define_layout(obj, cols=1, rows=1):
@@ -31,11 +32,11 @@ def define_layout(obj, cols=1, rows=1):
         trg = obj
         method(trg, cols, rows)
 
-
 def scan():
     window = Tk()
     window.geometry("500x200")  # Size of the window
     window.title("Scaning")
+    window.eval('tk::PlaceWindow . center')
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
     div2 = Frame(window, width=div_size, height=div_size, bg="white")
 
@@ -72,6 +73,7 @@ def option():
     window = Tk()
     window.title("Generate QR code")
     window.geometry("500x200")
+    window.eval('tk::PlaceWindow . center')
 
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
     div2 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -128,13 +130,19 @@ def option():
 
     window.mainloop()
 
-def addrecord(code):
-    return
+
+def find_file_path():
+    return 
+
+def addrecord(sender,reciever,number,code):
+    messagebox.showwarning("System", "File download" + "\nFile path:"  + find_file_path )
+
 
 def add():
     window = Tk()
     window.title("Add transaction record")
     window.geometry("500x200")
+    window.eval('tk::PlaceWindow . center')
 
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
     div2 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -150,42 +158,46 @@ def add():
 
     l11 = Label(div1, text="Add transaction record", bg="orange", fg="white")
     l11.grid(row=0, sticky=align_mode)
-    l21 = Label(div2, text="Username: ", bg="white", fg="black")
+    l21 = Label(div2, text="Sender: ", bg="white", fg="black")
     e21 = Entry(div2, bg="white", fg="black")
-    l22 = Label(div2, text="Password: ", bg="white", fg="black")
+    l22 = Label(div2, text="Reciever: ", bg="white", fg="black")
     e22 = Entry(div2, bg="white", fg="black")
-    l23 = Label(div2, text="Please choose a product: ", bg="white", fg="black")
+    l23 = Label(div2, text="Number of item: ", bg="white", fg="black")
+    e23 = Entry(div2, bg="white", fg="black")
+    l24 = Label(div2, text="Please choose a product: ", bg="white", fg="black")
     bt1 = Button(
         div2,
         text="Apple",
         bg="green",
         fg="white",
-        command=lambda: addrecord("abc"),
+        command=lambda: addrecord(e21.get(),e22.get(),e23.get(),1),
     )
     bt2 = Button(
         div2,
         text="Melon",
         bg="green",
         fg="white",
-        command=lambda: addrecord("abc"),
+        command=lambda: addrecord(e21.get(),e22.get(),e23.get(),2),
     )
     bt3 = Button(
         div2,
         text="Stawberry",
         bg="green",
         fg="white",
-        command=lambda: addrecord("abc"),
+        command=lambda: addrecord(e21.get(),e22.get(),e23.get(),3),
     )
     bt4 = Button(div2, text="Return", bg="green", fg="white", command=window.destroy)
     l4 = Label(
         div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e"
     )
 
-    l21.grid(column=0, row=0,padx=20,ipadx=20,sticky=W)
-    e21.grid(column=0, row=0)
-    l22.grid(column=0, row=1,padx=20,ipadx=20,sticky=W)
-    e22.grid(column=0, row=1)
-    l23.grid(columnspan=1, sticky=align_mode)
+    l21.grid(column=0, row=0,sticky=align_mode)
+    e21.grid(column=0, row=1,sticky=align_mode)
+    l22.grid(column=1, row=0,sticky=align_mode)
+    e22.grid(column=1, row=1)
+    l23.grid(column=2,row=0,sticky=align_mode)
+    e23.grid(column=2,row=1)
+    l24.grid(columnspan=1, sticky=align_mode)
     bt1.grid(column=0, row=2, sticky=align_mode)
     bt2.grid(column=1, row=2, sticky=align_mode)
     bt3.grid(column=2, row=2, sticky=align_mode)
@@ -203,7 +215,8 @@ def usermanu(username):
     window.withdraw()
     manu = Tk()
     manu.title("Blockchain")
-    manu.geometry("300x200")
+    manu.geometry("500x200")
+    manu.eval('tk::PlaceWindow . center')
 
     div1 = Frame(manu, width=div_size, height=div_size, bg="white")
     div2 = Frame(manu, width=div_size, height=div_size, bg="white")
@@ -254,6 +267,7 @@ def adminmanu(username):
     manu = Tk()
     manu.title("Blockchain")
     manu.geometry("500x200")
+    manu.eval('tk::PlaceWindow . center')
 
     div1 = Frame(manu, width=div_size, height=div_size, bg="white")
     div2 = Frame(manu, width=div_size, height=div_size, bg="white")
