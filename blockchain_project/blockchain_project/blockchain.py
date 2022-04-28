@@ -1,8 +1,11 @@
 import hashlib
 from time import time
 import json
+from unittest import result
+from matplotlib.font_manager import json_dump, json_load
 from numpy import block, empty
 import json
+import rsa
 
 
 class blockchain(object):
@@ -37,8 +40,8 @@ class blockchain(object):
 
         return self.chain[-1]
 
-    def new_transaction(self, sender, recipient, amount):
-        transaction = {"sender": sender, "recipient": recipient, "amount": amount}
+    def new_transaction(self, sender, recipient, Product):
+        transaction = {"sender": sender, "recipient": recipient, "Product": Product}
         self.pendingTransactions.append(transaction)
         return self.last_block["index"] + 1
 
@@ -51,6 +54,70 @@ class blockchain(object):
         hex_hash = raw_hash.hexdigest()
 
         return hex_hash
+
+
+def identify_product(product_chain):
+
+    try:
+        product_chain = RSA_decryption(product_chain)
+        if product_chain == False:
+            return "Incorrect Key"
+    except:
+        return "Cannot identify product"
+
+    product = product_chain[1]["trainsactions"][0]["Product"]
+    real_chain = []
+    if product == "Apple":
+        real_chain = blockchain_Apple.chain
+    elif product == "Melon":
+        real_chain = blockchain_Melon.chain
+    elif product == "Stawberry":
+        real_chain = blockchain_Stawberry.chain
+    else:
+        return "Cannot identify product"
+
+    for i, t_chain, r_chain in zip(
+        range(len(product_chain)), product_chain, real_chain
+    ):
+        if json.dumps(t_chain) != json.dumps(r_chain):
+            return "Fake Product!"
+    return "Genuine Prodcut!"
+
+
+# -------------------------------------------------------------------
+
+
+def Gen_key():
+    (public_key, private_key) = rsa.newkeys(1024)
+    with open(r"key\publcKey.pem", "wb") as key:
+        key.write(public_key.save_pkcs1("PEM"))
+    with open(r"key\privateKey.pem", "wb") as key:
+        key.write(private_key.save_pkcs1("PEM"))
+
+
+def RSA_encryption(txt):
+    (public_key, private_key) = get_keys()
+    txt = json.dumps(json.dumps(txt))
+    result = rsa.encrypt(txt.encode("utf8"), public_key)
+    return result
+
+
+def RSA_decryption(RSA_content):
+    try:
+        (public_key, private_key) = get_keys()
+        result = rsa.decrypt(RSA_content, private_key).decode("utf8")
+        result = json.loads(json.loads(result))
+        return result
+    except:
+        return False
+
+
+def get_keys():
+    with open(r"key\publcKey.pem", "rb") as key:
+        publicKey = rsa.PublicKey.load_pkcs1(key.read())
+    with open(r"key\privateKey.pem", "rb") as key:
+        privateKey = rsa.PrivateKey.load_pkcs1(key.read())
+    return privateKey, publicKey
 
 
 # ---------------------------------------------------------------------------------

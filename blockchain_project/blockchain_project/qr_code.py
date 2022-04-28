@@ -6,7 +6,8 @@ import pyzbar.pyzbar as pyzbar
 import imutils
 import qrcode
 from PIL import Image
-import json
+import os
+from tkinter import messagebox
 
 
 def qr_code_decoder(img_path):
@@ -22,7 +23,7 @@ def qr_code_decoder(img_path):
         if text != []:
             return text.data.decode("utf-8")
         else:
-            return "Cannot decode image"
+            return False
 
 
 def draw_rectangle(x, y, w, h, img):
@@ -43,10 +44,17 @@ def rotate_img(img_path):
 
 # txt is qr code content, string type and it will save as image, feel free to change name in img.save("")
 def generate_QRcode(txt):
+
     img = qrcode.make(txt)
-    img.save(r"blockchain_project\blockchain_project\images\test.jpg")
-    image = cv2.imread(r"blockchain_project\blockchain_project\images\test.jpg")
+    img.save(r"blockchain_project\blockchain_project\images\product_qr_code.jpg")
+    image = cv2.imread(
+        r"blockchain_project\blockchain_project\images\product_qr_code.jpg"
+    )
     cv2.imshow("Image", image)
+    messagebox.showinfo(
+        "System",
+        "File download" + "\nFile path:" + os.path.abspath("product_qr_code.jpg"),
+    )
     cv2.waitKey(0)
 
 
