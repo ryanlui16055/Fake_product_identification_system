@@ -1,9 +1,7 @@
-import getpass
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
-from tkinter.filedialog import askopenfile
-from PIL import Image, ImageTk
+from PIL import ImageTk
 import qr_code as qrCode
 import blockchain as bChain
 import os
@@ -153,7 +151,7 @@ def option():
 
 def addrecord(sender, receiver, Proof, code):
     result = bChain.addition_chain(sender, receiver, Proof, code)
-    print(result)
+    messagebox.showinfo("Add transaction record", result)
 
 
 def add():
@@ -180,7 +178,7 @@ def add():
     e21 = Entry(div2, bg="white", fg="black")
     l22 = Label(div2, text="Reciever: ", bg="white", fg="black")
     e22 = Entry(div2, bg="white", fg="black")
-    l23 = Label(div2, text="Number of item: ", bg="white", fg="black")
+    l23 = Label(div2, text="Proof: ", bg="white", fg="black")
     e23 = Entry(div2, bg="white", fg="black")
     l24 = Label(div2, text="Please choose a product: ", bg="white", fg="black")
     bt1 = Button(

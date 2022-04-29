@@ -1,10 +1,6 @@
 import hashlib
 from time import time
 import json
-from unittest import result
-from matplotlib.font_manager import json_dump, json_load
-from numpy import block, empty
-import json
 import rsa
 import os.path
 
@@ -57,13 +53,20 @@ class blockchain(object):
         return hex_hash
 
 
+# add new transaction block to product blockchain
 def addition_chain(sender, recevier, proof, product):
+    name_list = []
+
     with open(
         r".\blockchain_project\blockchain_project\login\username.txt", "r"
     ) as usernames:
-        if sender not in usernames:
+        for name in usernames.readlines():
+            name = name.strip()
+            name_list.append(name)
+
+        if sender not in name_list:
             return "No such sender"
-        if recevier not in usernames:
+        if recevier not in name_list:
             return "No such receiver"
 
     if product == 1:
@@ -91,14 +94,11 @@ def addition_chain(sender, recevier, proof, product):
     return "Successfully added transaction in blockchain"
 
 
+# decryption the content of QRcode and check whether is fake or not
 def identify_product(product_chain_RSA):
-
-    try:
-        product_chain = RSA_decryption(product_chain_RSA)
-        if product_chain == False:
-            return "Incorrect Key"
-    except:
-        return "not be able to identify."
+    product_chain = RSA_decryption(product_chain_RSA)
+    if product_chain == False:
+        return "Incorrect Key"
 
     product = product_chain[1]["trainsactions"][0]["Product"]
     real_chain = []
@@ -121,7 +121,7 @@ def identify_product(product_chain_RSA):
 
 # -------------------------------------------------------------------
 
-
+# generate RSA KEY
 def Gen_key():
     (public_key, private_key) = rsa.newkeys(8000)
     with open(
@@ -134,6 +134,7 @@ def Gen_key():
         key.write(private_key.save_pkcs1("PEM"))
 
 
+# RSA encryption
 def RSA_encryption(txt):
     (public_key, private_key) = get_keys()
     txt = json.dumps(json.dumps(txt))
@@ -141,9 +142,11 @@ def RSA_encryption(txt):
     return result
 
 
+# RSA decryption
 def RSA_decryption(RSA_content):
+
+    (public_key, private_key) = get_keys()
     try:
-        (public_key, private_key) = get_keys()
         result = rsa.decrypt(RSA_content, private_key).decode("ascii")
         result = json.loads(json.loads(result))
         return result
@@ -151,6 +154,7 @@ def RSA_decryption(RSA_content):
         return False
 
 
+# get key from folder
 def get_keys():
     with open(
         r".\blockchain_project\blockchain_project\key\publicKey.pem", "rb"
@@ -170,6 +174,8 @@ if (
     Gen_key()
 
 # ---------------------------------------------------------------------------------
+
+# create default block in the beginning
 blockchain_Apple = blockchain()
 blockchain_Melon = blockchain()
 blockchain_Stawberry = blockchain()
@@ -189,9 +195,6 @@ with open(
 
     t2 = blockchain_Apple.new_transaction("Mike", "Satoshi", "Apple")
     blockchain_Apple.CreateBlock(56867)
-
-    # t3 = blockchain_Apple.new_transaction("Satoshi", "Hal Finney", "Apple")
-    # blockchain_Apple.CreateBlock(54245)
 
 with open(
     r".\blockchain_project\blockchain_project\Chain_data\Apple.json", "w"
@@ -213,8 +216,6 @@ with open(
     blockchain_Melon.CreateBlock(53463463)
     t5 = blockchain_Melon.new_transaction("Satoshi", "Mike", "Melon")
     blockchain_Melon.CreateBlock(6763463489)
-    # t6 = blockchain_Melon.new_transaction("Satoshi", "Alice", "Melon")
-    # blockchain_Melon.CreateBlock(6764363489)
 
 with open(
     r".\blockchain_project\blockchain_project\Chain_data\Melon.json", "w"
@@ -235,8 +236,6 @@ with open(
     blockchain_Stawberry.CreateBlock(6789)
     t8 = blockchain_Stawberry.new_transaction("Alice", "Bob", "Stawberry")
     blockchain_Stawberry.CreateBlock(13515515)
-    # t9 = blockchain_Stawberry.new_transaction("Alice", "Mike", "Stawberry")
-    # blockchain_Stawberry.CreateBlock(6789)
 
 with open(
     r".\blockchain_project\blockchain_project\Chain_data\Stawberry.json", "w"
