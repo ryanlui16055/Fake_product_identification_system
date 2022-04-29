@@ -6,6 +6,7 @@ from matplotlib.font_manager import json_dump, json_load
 from numpy import block, empty
 import json
 import rsa
+import os.path
 
 
 class blockchain(object):
@@ -56,14 +57,48 @@ class blockchain(object):
         return hex_hash
 
 
-def identify_product(product_chain):
+def addition_chain(sender, recevier, proof, product):
+    with open(
+        r".\blockchain_project\blockchain_project\login\username.txt", "r"
+    ) as usernames:
+        if sender not in usernames:
+            return "No such sender"
+        if recevier not in usernames:
+            return "No such receiver"
+
+    if product == 1:
+        New_t = blockchain_Apple.new_transaction(sender, recevier, "Apple")
+        blockchain_Apple.CreateBlock(proof)
+        with open(
+            r".\blockchain_project\blockchain_project\Chain_data\Apple.json", "w"
+        ) as f:
+            f.write(json.dumps(blockchain_Apple.chain))
+    elif product == 2:
+        New_t = blockchain_Melon.new_transaction(sender, recevier, "Melon")
+        blockchain_Melon.CreateBlock(proof)
+        with open(
+            r".\blockchain_project\blockchain_project\Chain_data\Melon.json", "w"
+        ) as f:
+            f.write(json.dumps(blockchain_Melon.chain))
+    elif product == 3:
+        New_t = blockchain_Stawberry.new_transaction(sender, recevier, "Stawberry")
+        blockchain_Stawberry.CreateBlock(proof)
+        with open(
+            r".\blockchain_project\blockchain_project\Chain_data\Stawberry.json", "w"
+        ) as f:
+            f.write(json.dumps(blockchain_Stawberry.chain))
+
+    return "Successfully added transaction in blockchain"
+
+
+def identify_product(product_chain_RSA):
 
     try:
-        product_chain = RSA_decryption(product_chain)
+        product_chain = RSA_decryption(product_chain_RSA)
         if product_chain == False:
             return "Incorrect Key"
     except:
-        return "Cannot identify product"
+        return "not be able to identify."
 
     product = product_chain[1]["trainsactions"][0]["Product"]
     real_chain = []
@@ -88,24 +123,28 @@ def identify_product(product_chain):
 
 
 def Gen_key():
-    (public_key, private_key) = rsa.newkeys(1024)
-    with open(r"key\publcKey.pem", "wb") as key:
+    (public_key, private_key) = rsa.newkeys(8000)
+    with open(
+        r".\blockchain_project\blockchain_project\key\publicKey.pem", "wb"
+    ) as key:
         key.write(public_key.save_pkcs1("PEM"))
-    with open(r"key\privateKey.pem", "wb") as key:
+    with open(
+        r".\blockchain_project\blockchain_project\key\privateKey.pem", "wb"
+    ) as key:
         key.write(private_key.save_pkcs1("PEM"))
 
 
 def RSA_encryption(txt):
     (public_key, private_key) = get_keys()
     txt = json.dumps(json.dumps(txt))
-    result = rsa.encrypt(txt.encode("utf8"), public_key)
+    result = rsa.encrypt(txt.encode("ascii"), public_key)
     return result
 
 
 def RSA_decryption(RSA_content):
     try:
         (public_key, private_key) = get_keys()
-        result = rsa.decrypt(RSA_content, private_key).decode("utf8")
+        result = rsa.decrypt(RSA_content, private_key).decode("ascii")
         result = json.loads(json.loads(result))
         return result
     except:
@@ -113,12 +152,22 @@ def RSA_decryption(RSA_content):
 
 
 def get_keys():
-    with open(r"key\publcKey.pem", "rb") as key:
+    with open(
+        r".\blockchain_project\blockchain_project\key\publicKey.pem", "rb"
+    ) as key:
         publicKey = rsa.PublicKey.load_pkcs1(key.read())
-    with open(r"key\privateKey.pem", "rb") as key:
+    with open(
+        r".\blockchain_project\blockchain_project\key\privateKey.pem", "rb"
+    ) as key:
         privateKey = rsa.PrivateKey.load_pkcs1(key.read())
-    return privateKey, publicKey
+    return publicKey, privateKey
 
+
+if (
+    os.path.exists(r".\blockchain_project\blockchain_project\key\publicKey.pem")
+    == False
+):
+    Gen_key()
 
 # ---------------------------------------------------------------------------------
 blockchain_Apple = blockchain()
@@ -141,8 +190,8 @@ with open(
     t2 = blockchain_Apple.new_transaction("Mike", "Satoshi", "Apple")
     blockchain_Apple.CreateBlock(56867)
 
-    t3 = blockchain_Apple.new_transaction("Satoshi", "Hal Finney", "Apple")
-    blockchain_Apple.CreateBlock(54245)
+    # t3 = blockchain_Apple.new_transaction("Satoshi", "Hal Finney", "Apple")
+    # blockchain_Apple.CreateBlock(54245)
 
 with open(
     r".\blockchain_project\blockchain_project\Chain_data\Apple.json", "w"
@@ -164,8 +213,8 @@ with open(
     blockchain_Melon.CreateBlock(53463463)
     t5 = blockchain_Melon.new_transaction("Satoshi", "Mike", "Melon")
     blockchain_Melon.CreateBlock(6763463489)
-    t6 = blockchain_Melon.new_transaction("Satoshi", "Alice", "Melon")
-    blockchain_Melon.CreateBlock(6764363489)
+    # t6 = blockchain_Melon.new_transaction("Satoshi", "Alice", "Melon")
+    # blockchain_Melon.CreateBlock(6764363489)
 
 with open(
     r".\blockchain_project\blockchain_project\Chain_data\Melon.json", "w"
@@ -185,9 +234,9 @@ with open(
     t7 = blockchain_Stawberry.new_transaction("Mike", "Bob", "Stawberry")
     blockchain_Stawberry.CreateBlock(6789)
     t8 = blockchain_Stawberry.new_transaction("Alice", "Bob", "Stawberry")
-    blockchain_Stawberry.CreateBlock(6789)
-    t9 = blockchain_Stawberry.new_transaction("Alice", "Mike", "Stawberry")
-    blockchain_Stawberry.CreateBlock(6789)
+    blockchain_Stawberry.CreateBlock(13515515)
+    # t9 = blockchain_Stawberry.new_transaction("Alice", "Mike", "Stawberry")
+    # blockchain_Stawberry.CreateBlock(6789)
 
 with open(
     r".\blockchain_project\blockchain_project\Chain_data\Stawberry.json", "w"

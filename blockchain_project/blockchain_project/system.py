@@ -37,7 +37,7 @@ def define_layout(obj, cols=1, rows=1):
 
 def scan():
     window = Tk()
-    window.geometry("500x200") 
+    window.geometry("500x200")
     window.title("Scaning")
     window.eval("tk::PlaceWindow . center")
     div1 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -73,10 +73,10 @@ def scan():
         img = ImageTk.PhotoImage(file=filename)
         messagebox.showinfo(
             title="Scan QR code",
-            message="File upload successful"
-            + "\nFile path:"
-            + filename
-            + "\nThe product is ",
+            message="File upload successful !"
+            + "\n"
+            + "\nThe product is "
+            + bChain.identify_product(qrCode.qr_code_decoder(filename)),
         )
 
     define_layout(window, cols=1, rows=2)
@@ -112,21 +112,27 @@ def option():
         text="Apple",
         bg="green",
         fg="white",
-        command=lambda: qrCode.generate_QRcode(bChain.blockchain_Apple.chain),
+        command=lambda: qrCode.generate_QRcode(
+            bChain.RSA_encryption(bChain.blockchain_Apple.chain)
+        ),
     )
     bt2 = Button(
         div2,
         text="Melon",
         bg="green",
         fg="white",
-        command=lambda: qrCode.generate_QRcode(bChain.blockchain_Melon.chain),
+        command=lambda: qrCode.generate_QRcode(
+            bChain.RSA_encryption(bChain.blockchain_Melon.chain)
+        ),
     )
     bt3 = Button(
         div2,
         text="Stawberry",
         bg="green",
         fg="white",
-        command=lambda: qrCode.generate_QRcode(bChain.blockchain_Stawberry.chain),
+        command=lambda: qrCode.generate_QRcode(
+            bChain.RSA_encryption(bChain.blockchain_Stawberry.chain)
+        ),
     )
     bt4 = Button(div2, text="Return", bg="green", fg="white", command=window.destroy)
     l4 = Label(
@@ -140,17 +146,14 @@ def option():
     bt4.grid(columnspan=3, sticky=align_mode)
     l4.grid(columnspan=4, sticky=E)
 
-    define_layout(div2, cols=3,rows=4)
+    define_layout(div2, cols=3, rows=4)
 
     window.mainloop()
 
 
-def find_file_path():
-    return
-
-
-def addrecord(sender, reciever, number, code):
-    return
+def addrecord(sender, receiver, Proof, code):
+    result = bChain.addition_chain(sender, receiver, Proof, code)
+    print(result)
 
 
 def add():
@@ -219,7 +222,7 @@ def add():
     bt4.grid(columnspan=3, sticky=align_mode)
     l4.grid(columnspan=4, sticky=E)
 
-    define_layout(div2,cols=3, rows=4)
+    define_layout(div2, cols=3, rows=4)
 
     window.mainloop()
 
@@ -250,14 +253,14 @@ def usermanu(username):
     bt1 = Button(
         div2, text="Scan QR code", bg="green", fg="white", command=lambda: scan()
     )
-   
+
     bt3 = Button(div2, text="Quit", bg="green", fg="white", command=manu.destroy)
     l4 = Label(
         div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e"
     )
 
     l21.grid(column=0, row=0, sticky=W)
-    bt1.grid(columnspan=1, sticky=align_mode)  
+    bt1.grid(columnspan=1, sticky=align_mode)
     bt3.grid(columnspan=2, sticky=align_mode)
     l4.grid(columnspan=3, sticky=E)
 
@@ -314,7 +317,7 @@ def adminmanu(username):
     bt4.grid(columnspan=3, sticky=align_mode)
     l4.grid(columnspan=4, sticky=E)
 
-    define_layout(div2,cols=3 ,rows=4)
+    define_layout(div2, cols=3, rows=4)
 
     manu.mainloop()
 
@@ -366,7 +369,7 @@ def register(username, password):
     usermanu(username)
     return
 
-adminmanu("clarus")
+
 # root
 div1 = Frame(window, width=div_size, height=div_size, bg="white")
 div2 = Frame(window, width=div_size, height=div_size, bg="white")
@@ -409,13 +412,13 @@ bt3 = Button(div2, text="Quit", bg="green", fg="white", command=window.destroy)
 l4 = Label(div2, text="Produced by Clarus & Ryan", bg="white", fg="black", anchor="e")
 
 l21.grid(column=0, row=0, sticky=align_mode)
-e21.grid(column=1, row=0,sticky=W)
+e21.grid(column=1, row=0, sticky=W)
 l22.grid(column=0, row=1, sticky=align_mode)
-e22.grid(column=1, row=1,sticky=W)
-bt1.grid(column=0,row=2, sticky=align_mode)
-bt2.grid(column=1,row=2, sticky=align_mode)
+e22.grid(column=1, row=1, sticky=W)
+bt1.grid(column=0, row=2, sticky=align_mode)
+bt2.grid(column=1, row=2, sticky=align_mode)
 bt3.grid(columnspan=3, sticky=align_mode)
 l4.grid(columnspan=4, sticky=E)
 
-define_layout(div2, cols=2,rows=4)
+define_layout(div2, cols=2, rows=4)
 window.mainloop()
